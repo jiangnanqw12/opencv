@@ -125,46 +125,7 @@ int cornerScore<16>(const uchar* ptr, const int pixel[], int threshold)
     for( k = 0; k < N; k++ )
         d[k] = (short)(v - ptr[pixel[k]]);
 
-#if CV_SIMD128
-    if (true)
-    {
-        v_int16x8 q0 = v_setall_s16(-1000), q1 = v_setall_s16(1000);
-        for (k = 0; k < 16; k += 8)
-        {
-            v_int16x8 v0 = v_load(d + k + 1);
-            v_int16x8 v1 = v_load(d + k + 2);
-            v_int16x8 a = v_min(v0, v1);
-            v_int16x8 b = v_max(v0, v1);
-            v0 = v_load(d + k + 3);
-            a = v_min(a, v0);
-            b = v_max(b, v0);
-            v0 = v_load(d + k + 4);
-            a = v_min(a, v0);
-            b = v_max(b, v0);
-            v0 = v_load(d + k + 5);
-            a = v_min(a, v0);
-            b = v_max(b, v0);
-            v0 = v_load(d + k + 6);
-            a = v_min(a, v0);
-            b = v_max(b, v0);
-            v0 = v_load(d + k + 7);
-            a = v_min(a, v0);
-            b = v_max(b, v0);
-            v0 = v_load(d + k + 8);
-            a = v_min(a, v0);
-            b = v_max(b, v0);
-            v0 = v_load(d + k);
-            q0 = v_max(q0, v_min(a, v0));
-            q1 = v_min(q1, v_max(b, v0));
-            v0 = v_load(d + k + 9);
-            q0 = v_max(q0, v_min(a, v0));
-            q1 = v_min(q1, v_max(b, v0));
-        }
-        q0 = v_max(q0, v_setzero_s16() - q1);
-        threshold = v_reduce_max(q0) - 1;
-    }
-    else
-#endif
+
     {
 
         int a0 = threshold;
