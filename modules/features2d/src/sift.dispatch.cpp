@@ -537,25 +537,22 @@ void SIFT_Impl::detectAndCompute(InputArray _image, InputArray _mask,
     std::vector<Mat> gpyr;
     int nOctaves = actualNOctaves > 0 ? actualNOctaves : cvRound(std::log( (double)std::min( base.cols, base.rows ) ) / std::log(2.) - 2) - firstOctave;
 
-    //double t, tf = getTickFrequency();
-    //t = (double)getTickCount();
+
     buildGaussianPyramid(base, gpyr, nOctaves);
 
-    //t = (double)getTickCount() - t;
-    //printf("pyramid construction time: %g\n", t*1000./tf);
+
 
     if( !useProvidedKeypoints )
     {
         std::vector<Mat> dogpyr;
         buildDoGPyramid(gpyr, dogpyr);
-        //t = (double)getTickCount();
+
         findScaleSpaceExtrema(gpyr, dogpyr, keypoints);
         KeyPointsFilter::removeDuplicatedSorted( keypoints );
 
         if( nfeatures > 0 )
             KeyPointsFilter::retainBest(keypoints, nfeatures);
-        //t = (double)getTickCount() - t;
-        //printf("keypoint detection time: %g\n", t*1000./tf);
+
 
         if( firstOctave < 0 )
             for( size_t i = 0; i < keypoints.size(); i++ )
