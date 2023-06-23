@@ -575,14 +575,13 @@ void SIFT_Impl::detectAndCompute(InputArray _image, InputArray _mask,
 
     if( _descriptors.needed() )
     {
-        //t = (double)getTickCount();
+
         int dsize = descriptorSize();
         _descriptors.create((int)keypoints.size(), dsize, descriptor_type);
 
         Mat descriptors = _descriptors.getMat();
         calcDescriptors(gpyr, keypoints, descriptors, nOctaveLayers, firstOctave);
-        //t = (double)getTickCount() - t;
-        //printf("descriptor extraction time: %g\n", t*1000./tf);
+
     }
 }
 
